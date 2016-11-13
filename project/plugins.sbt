@@ -1,6 +1,4 @@
-//
-// Copyright (C) 2016 Lightbend Inc. <https://www.lightbend.com>
-//
+resolvers += Resolver.url("bintray.scaffolding-plugin.resolver", url("http://dl.bintray.com/fabszn/sbt-plugins"))(Resolver.ivyStylePatterns)
 
 // The Lagom plugin
 addSbtPlugin("com.lightbend.lagom" % "lagom-sbt-plugin" % "1.2.0")
