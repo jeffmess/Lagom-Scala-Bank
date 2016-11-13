@@ -1,0 +1,18 @@
+@(id: String)
+
+@scripts = { <script>initAccountPage()</script> }
+
+@main(scripts) {
+
+    <div class="row">
+        <h3>Account details</h3>
+    </div>
+
+    <div class="row">
+        <div class="row">id: <span id="Id">@id</span></div>
+        <div class="row">owner: <span id="Owner"></span></div>
+        <div class="row">value: <span id="Value"></span></div>
+    </div>
+
+
+}

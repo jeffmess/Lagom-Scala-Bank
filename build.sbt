@@ -90,15 +90,6 @@ lazy val frontEnvVersion = "1.0-SNAPSHOT"
 lazy val frontEnd: Project = project(frontEndName, frontEnvVersion)
   .enablePlugins(PlayScala, LagomPlay)
   .settings(routesGenerator := InjectedRoutesGenerator)
-  .settings(
-    libraryDependencies ++= Seq(
-      "org.webjars" %% "webjars-play" % "2.5.0",
-      "org.webjars.npm" % "bootstrap" % "3.3.7",
-      "org.webjars.npm" % "jquery" % "3.1.1",
-      "org.webjars.bower" % "rxjs" % "4.1.0",
-      "org.webjars.npm" % "bluebird" % "3.4.6"
-    )
-  )
 
 lazy val bankAccountVersion = "1.0-SNAPSHOT"
 lazy val bankAccountApi = scalaServiceApi("bank-account-api", bankAccountVersion)

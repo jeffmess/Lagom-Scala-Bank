@@ -9,10 +9,14 @@ import play.api.mvc._
  * application's home page.
  */
 @Singleton
-class HomeController @Inject()(webJarAssets: WebJarAssets) extends Controller {
+class HomeController @Inject() extends Controller {
 
   def index = Action {
-    Ok(views.html.index(webJarAssets, "Your new application is ready."))
+    Ok(views.html.index())
+  }
+
+  def account(id: String) = Action { (req: Request[AnyContent]) =>
+    Ok(views.html.account(id))
   }
 
 }
