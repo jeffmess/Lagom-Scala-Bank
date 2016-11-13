@@ -1,0 +1,19 @@
+@(webJarAssets: WebJarAssets, message: String)
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        @* Here's where we render the page title `String`. *@
+        <title>Welcome to Play</title>
+        <link rel='stylesheet' href='@routes.WebJarAssets.at(webJarAssets.locate("css/bootstrap.min.css"))'>
+        <link rel='stylesheet' href='@routes.WebJarAssets.at(webJarAssets.locate("jquery.min.js"))'>
+        <link rel='stylesheet' href='@routes.WebJarAssets.at(webJarAssets.locate("rx.all.min.js"))'>
+        <link rel='stylesheet' href='@routes.WebJarAssets.at(webJarAssets.locate("bluebird.min.js"))'>
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("css/main.css")">
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("imgs/favicon.png")">
+        <script src="@routes.Assets.versioned("js/hello.js")" type="text/javascript"></script>
+    </head>
+    <body>
+        <h1>Hi</h1>
+    </body>
+</html>

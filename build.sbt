@@ -61,7 +61,7 @@ def scalaServiceImpl(id: String, versionV: String) = scalaProject(id, versionV)
   .enablePlugins(LagomJava)
   .settings(
     libraryDependencies ++= Seq(
-      lagomJavadslPersistence,
+      lagomJavadslPersistenceCassandra,
       lagomJavadslTestKit
     )
   )
@@ -81,32 +81,26 @@ lazy val utils = scalaProject("utils", utilsVersion)
     )
   )
 
+// ----------------------------------------------
+// Services
+// ----------------------------------------------
 
-
-lazy val helloworldApi = project("helloworld-api", "1.0-SNAPSHOT")
-  .settings(
-    libraryDependencies += lagomJavadslApi
-  )
-
-lazy val helloworldImpl = project("helloworld-impl", "1.0-SNAPSHOT")
-  .enablePlugins(LagomJava)
+lazy val frontEndName = "front-end"
+lazy val frontEnvVersion = "1.0-SNAPSHOT"
+lazy val frontEnd: Project = project(frontEndName, frontEnvVersion)
+  .enablePlugins(PlayScala, LagomPlay)
+  .settings(routesGenerator := InjectedRoutesGenerator)
   .settings(
     libraryDependencies ++= Seq(
-      lagomJavadslPersistenceCassandra,
-      lagomJavadslTestKit
+      "org.webjars" %% "webjars-play" % "2.5.0",
+      "org.webjars.npm" % "bootstrap" % "3.3.7",
+      "org.webjars.npm" % "jquery" % "3.1.1",
+      "org.webjars.bower" % "rxjs" % "4.1.0",
+      "org.webjars.npm" % "bluebird" % "3.4.6"
     )
   )
-  .settings(lagomForkedTestSettings: _*)
-  .dependsOn(helloworldApi)
 
-lazy val hellostreamApi = project("hellostream-api", "1.0-SNAPSHOT")
-  .settings(
-    libraryDependencies += lagomJavadslApi
-  )
-
-lazy val hellostreamImpl = project("hellostream-impl", "1.0-SNAPSHOT")
-  .enablePlugins(LagomJava)
-  .dependsOn(hellostreamApi, helloworldApi)
-  .settings(
-    libraryDependencies += lagomJavadslTestKit
-  )
+lazy val bankAccountVersion = "1.0-SNAPSHOT"
+lazy val bankAccountApi = scalaServiceApi("bank-account-api", bankAccountVersion)
+lazy val bankAccountImpl = scalaServiceImpl("bank-account-impl", "1.0-SNAPSHOT")
+  .dependsOn(bankAccountApi)
