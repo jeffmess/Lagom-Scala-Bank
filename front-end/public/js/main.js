@@ -27,7 +27,7 @@ const initMainPage = () => {
       }).then(checkStatus)
         .then(parseJSON)
         .then(json => {
-          $accounts.append("<a href='/account/" + json.id + "' >" + json.owner + "</a>")
+          $accounts.append("<li><a href='/account/" + json.id + "' >" + json.owner + "</a></li>")
         })
         .catch(error => { console.log('request failed', error) })
     })

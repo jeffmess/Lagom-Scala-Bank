@@ -2,18 +2,22 @@
 
 @main(scripts) {
 
-    <div class="row">
-        <h3>Create account</h3>
+    <div class="row-fluid">
+        <h3>Crear una cuenta</h3>
     </div>
 
-    <div class="row">
-        <form class="form-inline" id="CreateAccount">
-            <label for="CreateAccount-name">Su Nombre</label>
-            <input type="text" class="form-control" id="CreateAccount-name" placeholder="Introduzca su nombre" />
+    <div class="row-fluid">
+        <form id="CreateAccount">
+            <div class="form-group">
+                <label for="CreateAccount-name">Su Nombre</label>
+                <input type="text" class="form-control" id="CreateAccount-name" placeholder="Introduzca su nombre" />
+            </div>
             <button type="submit" class="btn btn-default">Crea tu cuenta</button>
         </form>
     </div>
 
-    <div class="row" id="Accounts"></div>
+    <hr>
+
+    <ul class="row-fluid" id="Accounts"></ul>
 
 }
