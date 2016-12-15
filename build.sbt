@@ -1,3 +1,5 @@
+import sbt._
+
 organization in ThisBuild := "com.guizmaii"
 
 // the Scala version that will be used for cross-compiled libraries
@@ -90,8 +92,16 @@ lazy val frontEnvVersion = "1.0-SNAPSHOT"
 lazy val frontEnd: Project = project(frontEndName, frontEnvVersion)
   .enablePlugins(PlayScala, LagomPlay)
   .settings(routesGenerator := InjectedRoutesGenerator)
+  .dependsOn(authJwtlib)
 
 lazy val bankAccountVersion = "1.0-SNAPSHOT"
 lazy val bankAccountApi = scalaServiceApi("bank-account-api", bankAccountVersion)
 lazy val bankAccountImpl = scalaServiceImpl("bank-account-impl", "1.0-SNAPSHOT")
   .dependsOn(bankAccountApi)
+
+
+lazy val authJwtlib = (Project("authJwtlib",file("authJwtlib"))).settings(
+  version := "1.0-SNAPSHOT",
+  libraryDependencies ++= Seq("com.typesafe" % "config" % "1.3.1",
+    "com.pauldijou" %% "jwt-core" % "0.9.2",
+    "com.typesafe.play" % "play-json_2.11" % "2.5.10"))

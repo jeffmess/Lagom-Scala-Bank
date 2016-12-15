@@ -8,10 +8,19 @@ const checkStatus = (response) => {
   }
 }
 
-const parseJSON = (response) => response.json()
+const parseJSON = (response) => {
+  return response.json();
+
+
+}
 
 const initMainPage = () => {
   $(document).ready(function() {
+    authentification();
+
+
+
+
     var $createOrderForm = $('#CreateAccount')
     var $accounts = $('#Accounts')
 
@@ -41,13 +50,75 @@ const initAccountPage = () => {
     var $value = $('#Value')
 
     fetch('/api/accounts/' + accountIdValue)
-      .then(checkStatus)
-      .then(parseJSON)
-      .then(json => {
-        $owner.html(json.owner)
-        $value.html(json.value)
-      })
-      .catch(error => { console.log('request failed', error) })
+        .then(checkStatus)
+        .then(parseJSON)
+        .then(json => {
+      $owner.html(json.owner)
+    $value.html(json.value)
+  })
+    .catch(error => { console.log('request failed', error) })
   })
 }
+
+
+
+
+
+
+const authentification = (todo) => {
+
+  var token = localStorage.getItem("Authorization");
+  if (token != null){
+
+    fetch('/login',
+        {
+          headers: { 'Authorization': token }
+        })
+        .then(checkStatus)
+        .then(parseJSON)
+        .then(json => {
+
+      $("#loginPanel").html("Hello, " + json.login);
+
+
+  }).catch(error => { console.log('request failed', error) })
+
+  }else {
+
+    $("#loginForm").click(() => {
+
+          var pwd = $('#lg_username').val();
+          var login = $('#lg_password').val();
+
+          fetch('/auth', {
+            method: 'POST',
+            headers: { 'Content-type': 'application/json; charset=UTF-8' },
+            body: JSON.stringify({login: login, pwd: pwd})
+          }).then(checkStatus)
+              .then(parseJSON)
+              .then(json => {
+            localStorage.setItem("Authorization",json.jwtToken)
+            return json.jwtToken;
+          }).then((token) => {
+                 fetch('/login',
+                 {
+                     headers: { 'Authorization': token }
+                  }
+                  ).then(checkStatus)
+                   .then(parseJSON)
+                   .then(json => {
+                     $("#loginPanel").html("Hello, " + json.login);
+
+                    }
+  )})
+  .catch(error => {
+              console.log('request failed', error)
+          })
+        })
+
+  }
+
+  }
+
+
 
