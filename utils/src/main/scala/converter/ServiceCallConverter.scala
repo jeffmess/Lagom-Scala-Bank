@@ -5,7 +5,7 @@ import java.util.concurrent.CompletionStage
 import akka.japi.Pair
 import com.lightbend.lagom.javadsl.api.ServiceCall
 import com.lightbend.lagom.javadsl.api.transport.{MessageProtocol, RequestHeader, ResponseHeader}
-import com.lightbend.lagom.javadsl.server.HeaderServiceCall
+import com.lightbend.lagom.javadsl.server.{HeaderServiceCall, ServerServiceCall}
 import org.pcollections.HashTreePMap
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -28,4 +28,8 @@ object ServiceCallConverter extends CompletionStageConverters {
           .map(response => Pair.create(new ResponseHeader(status, new MessageProtocol(), HashTreePMap.empty()), response))
       }
     }
+
+  implicit def liftToServiceServiceCall[Request, Response](f: (Request) => CompletionStage[Response]): ServerServiceCall[Request, Response] = new ServerServiceCall[Request,Response] {
+    override def invoke(request: Request): CompletionStage[Response] = f(request)
+  }
 }

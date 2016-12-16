@@ -27,12 +27,13 @@ trait AuthJwt {
   }
 
 
-  def extractClaimsValue(token: String, key: String): Either[Throwable, String] = {
+  def extractClaimsValue(token: String, claimsKey: String): Either[Throwable, String] = {
     Jwt.decode(token, Settings.secretkey, Seq(JwtAlgorithm.HS256)) match {
-      case Success(r) => Right((Json.parse(r) \"login").get.toString())
+      case Success(r) => Right((Json.parse(r) \ claimsKey).get.toString())
       case Failure(ex) => Left(ex)
     }
   }
 
 
 }
+

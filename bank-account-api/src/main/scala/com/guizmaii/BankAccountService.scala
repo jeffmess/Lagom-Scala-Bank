@@ -1,6 +1,6 @@
 package com.guizmaii
 
-import akka.{NotUsed, Done}
+import akka.{Done, NotUsed}
 import com.lightbend.lagom.javadsl.api.ScalaService._
 import com.lightbend.lagom.javadsl.api.transport.Method._
 import com.lightbend.lagom.javadsl.api.{Descriptor, Service, ServiceCall}
@@ -37,6 +37,6 @@ trait BankAccountService extends Service {
         restCall(POST,  "/api/accounts", createAccount _),
         restCall(GET,   "/api/accounts/:id/transactions", transactions _),
         restCall(POST,  "/api/accounts/:id/transactions", createTransaction _)
-      ).withAutoAcl(true)
+      ).withAutoAcl(true).withExceptionSerializer(new AuthentificationException)
   }
 }

@@ -6,6 +6,7 @@ import javax.inject.Inject
 import akka.{Done, NotUsed}
 import com.lightbend.lagom.javadsl.api.ServiceCall
 import com.lightbend.lagom.javadsl.persistence.PersistentEntityRegistry
+import com.lightbend.lagom.javadsl.server.ServerServiceCall
 import play.api.inject.ConfigurationProvider
 
 import scala.concurrent.ExecutionContext
@@ -27,7 +28,7 @@ object BankAccountServiceImpl {
 class BankAccountServiceImpl @Inject()(
   config: ConfigurationProvider,
   persistentEntities: PersistentEntityRegistry
-)(implicit ex: ExecutionContext) extends BankAccountService {
+)(implicit ex: ExecutionContext) extends BankAccountService with AuthVerif {
 
   import BankAccountService._
   import BankAccountServiceImpl._
@@ -35,13 +36,13 @@ class BankAccountServiceImpl @Inject()(
 
   persistentEntities.register(classOf[BankAccountEntity])
 
-  override def accounts: ServiceCall[NotUsed, List[AccountDTO]] = ???
+  override def accounts: ServerServiceCall[NotUsed, List[AccountDTO]] = ???
 
   override def account(id: String): ServiceCall[NotUsed, AccountDTO] = _ => bankAccountEntityRef(id)
     .ask[Account, GetBankAccount](GetBankAccount())
     .map(_.toDTO)
 
-  override def createAccount: ServiceCall[CreateAccountRequest, AccountDTO] = { request: CreateAccountRequest =>
+  override def createAccount: ServerServiceCall[CreateAccountRequest, AccountDTO] = authentification[CreateAccountRequest, AccountDTO]{ request: CreateAccountRequest =>
     bankAccountEntityRef(UUID.randomUUID().toString)
       .ask[Account, CreateBankAccount](CreateBankAccount(owner = request.owner))
       .map(_.toDTO)

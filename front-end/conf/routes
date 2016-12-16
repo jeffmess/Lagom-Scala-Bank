@@ -4,8 +4,8 @@
 
 # An example controller showing a sample home page
 GET         /                    controllers.HomeController.index
-GET         /login               controllers.HomeController.verif
-POST        /auth                controllers.HomeController.auth
+GET         /login               controllers.SecurityController.verif
+POST        /auth                controllers.SecurityController.auth
 GET         /account/:id         controllers.HomeController.account(id: String)
 
 # Map static resources from the /public folder to the /assets URL path

@@ -97,7 +97,7 @@ lazy val frontEnd: Project = project(frontEndName, frontEnvVersion)
 lazy val bankAccountVersion = "1.0-SNAPSHOT"
 lazy val bankAccountApi = scalaServiceApi("bank-account-api", bankAccountVersion)
 lazy val bankAccountImpl = scalaServiceImpl("bank-account-impl", "1.0-SNAPSHOT")
-  .dependsOn(bankAccountApi)
+  .dependsOn(bankAccountApi,authJwtlib)
 
 
 lazy val authJwtlib = (Project("authJwtlib",file("authJwtlib"))).settings(

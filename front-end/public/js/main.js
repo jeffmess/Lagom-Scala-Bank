@@ -14,11 +14,19 @@ const parseJSON = (response) => {
 
 }
 
+
+const loginAction = (json) => {
+    $("#loginPanel").html("Hello, " + json.login + " <span id='unlog' class='glyphicon glyphicon-remove' aria-hidden='true'></span>").removeClass('panel-danger');
+    $("#unlog").click(() => {
+        localStorage.removeItem("Authorization");
+    window.location= "/"
+})
+
+}
+
 const initMainPage = () => {
   $(document).ready(function() {
     authentification();
-
-
 
 
     var $createOrderForm = $('#CreateAccount')
@@ -28,17 +36,23 @@ const initMainPage = () => {
       event.preventDefault();
 
       var nameValue = $('#CreateAccount-name').val()
+      var token = localStorage.getItem("Authorization");
 
       fetch('/api/accounts', {
         method: 'POST',
-        headers: { 'Content-type': 'application/json; charset=UTF-8' },
+        headers: { 'Content-type': 'application/json; charset=UTF-8',  'Authorization': token },
         body: JSON.stringify({ owner: nameValue })
       }).then(checkStatus)
         .then(parseJSON)
         .then(json => {
           $accounts.append("<li><a href='/account/" + json.id + "' >" + json.owner + "</a></li>")
         })
-        .catch(error => { console.log('request failed', error) })
+        .catch(error => {
+            console.log('request failed', error)
+             if(error == "Error: Forbidden"){
+                 $('#loginPanel').addClass('panel-danger');
+             }
+        })
     })
   })
 }
@@ -78,8 +92,7 @@ const authentification = (todo) => {
         .then(parseJSON)
         .then(json => {
 
-      $("#loginPanel").html("Hello, " + json.login);
-
+        loginAction(json)
 
   }).catch(error => { console.log('request failed', error) })
 
@@ -107,8 +120,7 @@ const authentification = (todo) => {
                   ).then(checkStatus)
                    .then(parseJSON)
                    .then(json => {
-                     $("#loginPanel").html("Hello, " + json.login);
-
+          loginAction(json);
                     }
   )})
   .catch(error => {
@@ -119,6 +131,5 @@ const authentification = (todo) => {
   }
 
   }
-
 
 

@@ -9,13 +9,14 @@ import scala.concurrent.Future
 /**
   * Created by fsznajderman on 10/12/2016.
   */
-class LoggedAction extends ActionBuilder[Request] with AuthJwt{
+object LoggedAction extends ActionBuilder[Request] with AuthJwt{
 
 
 
   override def invokeBlock[A](request: Request[A], block: (Request[A]) => Future[Result]): Future[Result] = {
+val token = request.headers.get(Authentification.headerKey)
 
-    request.headers.get(Authentification.headerKey) match {
+     token match {
       case Some(token) => {
         if(validateToken(token)) {
           block(request)
